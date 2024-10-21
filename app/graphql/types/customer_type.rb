@@ -6,7 +6,7 @@ module Types
     field :orders, [ OrderType ], null: true
 
     def is_loyal
-      Loaders::AssociationLoader.for(Customer, :sales).load(object) do |sales|
+      Sentry.with_child_span(op: :process_is_loyal, description: "loyal costomer is good") do |span|
         object.loyal?
       end
     end
